@@ -649,7 +649,9 @@ class Game:
                         start_time = time.time()
                         if skip_action:
                             raise TimeoutFunctionException()
+                        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
                         action = timed_func( observation )
+                        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB')
                     except TimeoutFunctionException:
                         print >>sys.stderr, "Agent %d timed out on a single move!" % agentIndex
                         self.agentTimeout = True
@@ -679,6 +681,7 @@ class Game:
                         return
                     self.unmute()
                 except Exception,data:
+                    print('ssssssssssssssssssssssssssssssssssssssssssssssssss')
                     self._agentCrash(agentIndex)
                     self.unmute()
                     return
