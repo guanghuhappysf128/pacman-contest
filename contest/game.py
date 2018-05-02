@@ -683,6 +683,7 @@ class Game:
                     self.unmute()
                     return
             else:
+                # we get the action without catching exceptions! (should be avoided!)
                 action = agent.getAction(observation)
             self.unmute()
 

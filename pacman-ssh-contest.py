@@ -289,7 +289,7 @@ class ContestRunner:
 
     # submissions file format: s???????[_datetime].zip
     # submissions folder format: s???????[_datetime]
-    # datetime in ISO8601 format:  https: // en.wikipedia.org / wiki / ISO_8601
+    # datetime in ISO8601 format:  https://en.wikipedia.org/wiki/ISO_8601
 
 
     def __init__(self, teams_root, include_staff_team, staff_teams_dir, compress_logs,
@@ -568,7 +568,7 @@ class ContestRunner:
         (red_team_name, red_team_agent_factory) = red_team
         (blue_team_name, blue_team_agent_factory) = blue_team
         # TODO: make the -c an option at the meta level to "Catch exceptions and enforce time limits"
-        command = 'python capture.py -c -r {red_team_agent_factory} -b {blue_team_agent_factory} -l {layout} -i {steps} -q --record'.format(
+        command = 'python capture.py -c -r "{red_team_agent_factory}" -b "{blue_team_agent_factory}" -l {layout} -i {steps} -q --record'.format(
             red_team_agent_factory=red_team_agent_factory, blue_team_agent_factory=blue_team_agent_factory,
             layout=layout, steps=self.max_steps)
         return command
@@ -615,15 +615,7 @@ class ContestRunner:
         else:
             self.games.append((red_team_name, blue_team_name, layout, self.ERROR_SCORE, winner))
 
-    def _run_match(self, red_team, blue_team, layout):
-        red_team_name, _ = red_team
-        blue_team_name, _ = blue_team
-        print('Running game %s vs %s (layout: %s).' % (red_team_name, blue_team_name, layout), end='')
-        sys.stdout.flush()
-        command = self._generate_command(red_team, blue_team, layout)
-        logging.info(command)
-        exit_code, output = commands.getstatusoutput('cd %s && %s' % (self.TMP_CONTEST_DIR, command))
-        self._analyse_output(red_team, blue_team, layout, exit_code, output)
+
 
     @staticmethod
     def upload_file(file_full_path, remote_name=None, remove_local=False):
@@ -695,12 +687,6 @@ class ContestRunner:
         if not os.path.exists(self.logs_archive_dir):
             os.makedirs(self.logs_archive_dir)
 
-    def run_contest(self):
-        self.prepare_dirs()
-        for red_team, blue_team in combinations(self.teams, r=2):
-            for layout in self.layouts:
-                self._run_match(red_team, blue_team, layout)
-        self._calculate_team_stats()
 
     def _generate_job(self, red_team, blue_team, layout):
         red_team_name, _ = red_team
@@ -726,9 +712,33 @@ class ContestRunner:
         for (red_team, blue_team, layout), exit_code, output, error in results:
             self._analyse_output(red_team, blue_team, layout, exit_code, output + error)
 
+
+    def run_contest_local(self):
+        """
+        This script runs the tournament in the local machine. This is NOT used anymore, as everything is run
+        remotely via workers. The remote script can be used to run also in localhost
+        """
+        self.prepare_dirs()
+        for red_team, blue_team in combinations(self.teams, r=2):
+            for layout in self.layouts:
+                self._run_match(red_team, blue_team, layout)
+        self._calculate_team_stats()
+
+    def _run_match(self, red_team, blue_team, layout):
+        red_team_name, _ = red_team
+        blue_team_name, _ = blue_team
+        print('Running game %s vs %s (layout: %s).' % (red_team_name, blue_team_name, layout), end='')
+        sys.stdout.flush()
+        command = self._generate_command(red_team, blue_team, layout)
+        logging.info(command)
+        exit_code, output = commands.getstatusoutput('cd %s && %s' % (self.TMP_CONTEST_DIR, command))
+        self._analyse_output(red_team, blue_team, layout, exit_code, output)
+
+
     def run_contest_remotely(self, hosts):
         self.prepare_dirs()
 
+        #  Build all the jobs to implement the tournament, basically all pair of teams to play all-against-all
         jobs = []
         for red_team, blue_team in combinations(self.teams, r=2):
             for layout in self.layouts:
@@ -807,14 +817,16 @@ if __name__ == '__main__':
                   key_filename=w['private_key_file'], key_password=w['private_key_password']) for w in workers_details]
     del settings['workers_file']
 
+    # save the html_generator needed details  (as we will delete them)
     html_generator = HtmlGenerator(settings['www_dir'], settings['organizer'])
     del settings['organizer']
 
-
+    # OK now we run the contest
     logging.info("Will create contest runner with options: {}".format(settings))
     runner = ContestRunner(**settings)  # Setup ContestRunner
     runner.run_contest_remotely(hosts)  # Now run ContestRunner with the hosts!
 
+    # Finally, produce HTML
     stats_file_url, replays_file_url, logs_file_url = runner.store_results()
     html_generator.add_run(runner.contest_run_id, stats_file_url, replays_file_url, logs_file_url)
 
