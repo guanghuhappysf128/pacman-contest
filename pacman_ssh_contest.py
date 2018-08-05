@@ -788,7 +788,7 @@ class ContestRunner:
                 command = self._generate_command(red_team, blue_team, layout)
                 logging.info(command)
                 exit_code, output = subprocess.getstatusoutput('cd %s && %s' % (self.TMP_CONTEST_DIR, command))
-                self._analyse_output(red_team, blue_team, layout, exit_code, output)
+                self._analyse_output(red_team, blue_team, layout, exit_code, output, 0)
         self._calculate_team_stats()
 
 
