@@ -693,7 +693,7 @@ class ContestRunner:
             try:
                 replays_file_url = self.upload_file(replays_archive_full_path, remove_local=False)
                 data_stats['url_replays'] = replays_file_url.decode()
-            except Exception as e:
+            except Exception:
                 replays_file_url = os.path.relpath(replays_archive_full_path, self.www_dir)
         else:
             replays_file_url = os.path.relpath(replays_archive_full_path, self.www_dir)  # stats-archive/stats_xxx.json
@@ -708,7 +708,7 @@ class ContestRunner:
             try:
                 logs_file_url = self.upload_file(logs_archive_full_path, remove_local=False)
                 data_stats['url_logs'] = logs_file_url.decode()
-            except Exception as e:
+            except Exception:
                 logs_file_url = os.path.relpath(logs_archive_full_path, self.www_dir)
         else:
             logs_file_url = os.path.relpath(logs_archive_full_path, self.www_dir)
