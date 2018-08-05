@@ -662,7 +662,7 @@ class ContestRunner:
                 os.system('rm %s' % file_full_path)
                 transfer_url = transfer_url.decode() # convert to string
             logging.info(
-                'File %s transfered successfully to transfer.sh service; URL: %s' % (file_name, transfer_url))
+                'File %s transferred successfully to transfer.sh service; URL: %s' % (file_name, transfer_url))
         except Exception as e:
             # If transfer failed, use the standard server
             logging.error("Transfer-url failed, using local copy to store games. Exception: %s" % str(e))
@@ -725,7 +725,7 @@ class ContestRunner:
 
 
 
-    # prepare local direcotires to store replays, logs, etc.
+    # prepare local directories to store replays, logs, etc.
     def prepare_dirs(self):
         if not os.path.exists(self.stats_archive_dir):
             os.makedirs(self.stats_archive_dir)
@@ -749,7 +749,7 @@ class ContestRunner:
             replay_filename='replay-0')
 
         # We used to transfer contest_and_teams.zip at every job, but not anymore
-        # we transfered it once at the start per machine, and just copy+unzip there directly
+        # we transferred it once at the start per machine, and just copy+unzip there directly
         # req_file = TransferableFile(local_path=self.CORE_CONTEST_TEAM_ZIP_FILE, remote_path=self.CORE_CONTEST_TEAM_ZIP_FILE)
 
         replay_file_name = '{red_team_name}_vs_{blue_team_name}_{layout}.replay'.format(layout=layout,
