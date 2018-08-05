@@ -417,9 +417,9 @@ class ContestRunner:
         tied = False
 
 
-        try:
+        if isinstance(output, bytes):
             output = output.decode()    # convert byte into string
-        except:
+        else:
             pass    # it is already a string
         if output.find("Traceback") != -1 or output.find("agent crashed") != -1:
             bug = True
@@ -611,9 +611,9 @@ class ContestRunner:
             layout=layout, run_id=self.contest_timestamp_id, red_team_name=red_team_name, blue_team_name=blue_team_name)
         # results/results_<run_id>/{red_team_name}_vs_{blue_team_name}_{layout}.log
         with open(os.path.join(self.TMP_LOGS_DIR, log_file_name), 'w') as f:
-            try:
+            if isinstance(output, bytes):
                 print(output.decode('utf-8'), file=f)
-            except:
+            else:
                 print(output, file=f)
 
         if exit_code == 0:
