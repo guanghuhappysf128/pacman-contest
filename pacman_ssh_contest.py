@@ -478,7 +478,7 @@ class ContestRunner:
                 score = -1
                 # sys.exit(1)
 
-        return score, winner, loser, bug
+        return score, winner, loser, tied, bug
 
     def _prepare_platform(self, contest_zip_file_path, layouts_zip_file_path, destination, no_fixed_layouts=5,
                           no_random_layouts=3):
@@ -621,7 +621,7 @@ class ContestRunner:
         else:
             print('Game Failed: Check log in {output_file}.'.format(output_file=log_file_name))
 
-        score, winner, loser, bug = self._parse_result(output, red_team_name, blue_team_name, layout)
+        score, winner, loser, tied, bug = self._parse_result(output, red_team_name, blue_team_name, layout)
 
         if winner is None:
             self.ladder[red_team_name].append(score)
