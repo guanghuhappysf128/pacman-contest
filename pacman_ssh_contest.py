@@ -671,6 +671,23 @@ class ContestRunner:
 
         return transfer_url
 
+
+    def compress_results(self):
+        replays_archive_name = 'replays_%s.tar' % self.contest_timestamp_id
+        replays_archive_name += '.gz' if self.compress_logs else ''
+        replays_archive_full_path = os.path.join(self.replays_archive_dir, replays_archive_name)
+        with tarfile.open(replays_archive_full_path, 'w:gz' if self.compress_logs else 'w') as tar:
+            tar.add(self.TMP_REPLAYS_DIR, arcname='/')
+
+        logs_archive_name = 'logs_%s.tar' % self.contest_timestamp_id
+        logs_archive_name += '.gz' if self.compress_logs else ''
+        logs_archive_full_path = os.path.join(self.logs_archive_dir, logs_archive_name)
+        with tarfile.open(logs_archive_full_path, 'w:gz' if self.compress_logs else 'w') as tar:
+            tar.add(self.TMP_LOGS_DIR, arcname='/')
+
+        return replays_archive_full_path, logs_archive_full_path
+
+
     def store_results(self):
         # Basic data stats
         data_stats = {
@@ -683,12 +700,9 @@ class ContestRunner:
             'timestamp_id' : self.contest_timestamp_id
         }
 
+        replays_archive_full_path, logs_archive_full_path = self.compress_results()
+
         # Process replays: compress and upload
-        replays_archive_name = 'replays_%s.tar' % self.contest_timestamp_id
-        replays_archive_name += '.gz' if self.compress_logs else ''
-        replays_archive_full_path = os.path.join(self.replays_archive_dir, replays_archive_name)
-        with tarfile.open(replays_archive_full_path, 'w:gz' if self.compress_logs else 'w') as tar:
-            tar.add(self.TMP_REPLAYS_DIR, arcname='/')
         if self.upload_replays:
             try:
                 replays_file_url = self.upload_file(replays_archive_full_path, remove_local=False)
@@ -699,11 +713,6 @@ class ContestRunner:
             replays_file_url = os.path.relpath(replays_archive_full_path, self.www_dir)  # stats-archive/stats_xxx.json
 
         # Process replays: compress and upload
-        logs_archive_name = 'logs_%s.tar' % self.contest_timestamp_id
-        logs_archive_name += '.gz' if self.compress_logs else ''
-        logs_archive_full_path = os.path.join(self.logs_archive_dir, logs_archive_name)
-        with tarfile.open(logs_archive_full_path, 'w:gz' if self.compress_logs else 'w') as tar:
-            tar.add(self.TMP_LOGS_DIR, arcname='/')
         if self.upload_logs:
             try:
                 logs_file_url = self.upload_file(logs_archive_full_path, remove_local=False)
