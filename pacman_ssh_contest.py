@@ -17,8 +17,6 @@ __author__ = "Sebastian Sardina, Marco Tamassia, and Nir Lipovetzky"
 __copyright__ = "Copyright 2017-2018"
 __license__ = "GPLv3"
 
-from future.utils import iteritems
-
 
 #  ----------------------------------------------------------------------------------------------------------------------
 # Import standard stuff
@@ -827,7 +825,7 @@ class ContestRunner:
         """
         Compute ladder and create html with results. The html is saved in results_<contest_timestamp_id>/results.html.
         """
-        for team, scores in iteritems(self.ladder):
+        for team, scores in self.ladder.items():
             wins = 0
             draws = 0
             loses = 0
