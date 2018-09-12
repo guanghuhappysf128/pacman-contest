@@ -1,4 +1,4 @@
-from cluster_manager import Host, Job, TransferableFile, create_worker, run_job_on_worker
+from pacman_contest.cluster_manager import Host, Job, TransferableFile, create_worker, run_job_on_worker
 from joblib import Parallel, delayed
 import os
 

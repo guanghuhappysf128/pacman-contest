@@ -38,12 +38,12 @@ import random
 import tarfile
 import subprocess
 from itertools import combinations
-from cluster_manager import ClusterManager, Job, Host, TransferableFile
+from .cluster_manager import ClusterManager, Job, Host, TransferableFile
 import iso8601
 from pytz import timezone
 
 #import cluster_manager
-from pacman_html_generator import HtmlGenerator
+from .pacman_html_generator import HtmlGenerator
 
 # check https://stackoverflow.com/questions/10677721/advantages-of-logging-vs-print-logging-best-practices
 # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG, datefmt='%a, %d %b %Y %H:%M:%S')

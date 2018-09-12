@@ -5,7 +5,7 @@ import os
 import paramiko
 import argparse
 import datetime
-from scp import SCPClient
+from .scp import SCPClient
 
 class RunCommand():
 
