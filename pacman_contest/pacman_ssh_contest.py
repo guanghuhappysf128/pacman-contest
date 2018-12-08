@@ -283,7 +283,8 @@ class ContestRunner:
     TMP_REPLAYS_DIR = os.path.join(TMP_DIR, 'replays-run')
     TMP_LOGS_DIR = os.path.join(TMP_DIR, 'logs-run')
 
-    CONTEST_ZIP_FILE = 'contest.zip'
+    THIS_DIR = os.path.dirname(__file__)
+    CONTEST_ZIP_FILE = os.path.join(THIS_DIR, 'contest.zip')
     STAFF_TEAM_ZIP_FILE = ['staff_team_basic.zip', 'staff_team_medium.zip', 'staff_team_top.zip']
     STAFF_TEAM_FILENAME_PATTERN = re.compile(r'^staff_team_.+\.zip$')
     TEAMS_SUBDIR = 'teams'
