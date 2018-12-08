@@ -856,6 +856,8 @@ class ContestRunner:
                     student_id_col = row.index('STUDENT_ID')
                     team_col = row.index('TEAM_NAME')
 
+                if len(row) == 0:
+                    continue
                 student_id = row[student_id_col]
 
                 # couple of controls
