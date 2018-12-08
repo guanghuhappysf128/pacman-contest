@@ -8,5 +8,5 @@ setup(name='Pacman-Contest',
       author='Sebastian Sardina, Nir Lipovetzky and Marco Tamassia',
       author_email='sebastian.sardina@rmit.edu.au',
       url='https://bitbucket.org/ssardina-teaching/pacman-contest',
-      packages=['extras'],
+      packages=['pacman_contest', 'pacman_contest.extras'],
      )
