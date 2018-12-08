@@ -23,13 +23,13 @@ runs games for every pair of teams and layouts (round-robin type of tournament),
 
 The system contains two main scripts:
 
-1. ```pacman-ssh-contest.py``` is the main script to actually run a contest.
+1. ```pacman_ssh_contest.py``` is the main script to actually run a contest.
 2. ```pacman_html_generator.py``` generates an HTML web page from existing data of already ran contests.
 
 
 To see options available run: 
 ```
-python pacman-ssh-contest.py --help
+python pacman_ssh_contest.py --help
 ```
 
 ```
@@ -84,7 +84,7 @@ python pacman_html_generator.py --help
     * Many students benefit from the availability other tools, like [TensorFlow](https://www.tensorflow.org/), [scikit-learn](http://scikit-learn.org/), [neat-python](https://github.com/CodeReclaimers/neat-python): 
         * `pip install tensorflow sklearn sklearn scipy neat-python --user` or `sudo pip install tensorflow sklearn scipy neat-python`
 
-* In the **local machine** that will dispatch jobs to the cluster via `pacman-ssh-contest.py` script:
+* In the **local machine** that will dispatch jobs to the cluster via `pacman_ssh_contest.py` script:
     * unzip & zip (to pack and unpack submissions and files for transfer): `sudo apt-get install -y unzip zip`
     * Python >= 3.5 with:
            * setuptools
@@ -135,8 +135,8 @@ Hence, user must provide:
 
 ### Main components: ###
 
-- `driver.py`: downloads teams from submissions server, runs `pacman-ssh-contest.py` and upload results into the web.
-- `pacman-ssh-contest.py`: main script
+- `driver.py`: downloads teams from submissions server, runs `pacman_ssh_contest.py` and upload results into the web.
+- `pacman_ssh_contest.py`: main script
 - `cluster_manager.py`: the script to manage clusters
 - `contest.zip`: the actual main contest infrastructure, based on that one from UC (with minor fixes, e.g., delay in replays)
 - `layouts.zip`: some interesting layouts that can be used (beyond the randomly generated ones)
@@ -180,19 +180,19 @@ Hence, user must provide:
 
 Using a csv file to specify team names, include staff teams:
 ````
-python pacman-ssh-contest.py --compress-log \
+python pacman_ssh_contest.py --compress-log \
         --organizer "RMIT COSC1125/1127 - Intro to AI" \
         --teams-root AI17-contest/teams/  \
         --team-names-file AI17-contest/AI17-Contest-TEAMS.csv  \
         --www-dir www/ \
         --max-steps 1200 \
         --no-fixed-layouts 5 --no-random-layouts 10 \
-        --workers-file AI1-contest/workers/nectar-workers.jason  
+        --workers-file workers.json \
         --staff-teams-dir AI17-contest/staff-teams/
 ````
 Collecting submitted files in teams, and using the zip filename as teamname, and uploading the replays file only into a sharing file service instead of your local directory:
 ````
-python pacman-ssh-contest.py --compress-log \
+python pacman_ssh_contest.py --compress-log \
         --organizer "RMIT COSC1125/1127 - Intro to AI" \
         --teams-root AI17-contest/teams/  \
         --www-dir www/ \
